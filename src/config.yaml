@@ -1,0 +1,33 @@
+# AnomalyModifier model hyper-parameters.
+
+embedding:
+  model_name: InstaDeepAI/NTv3_100M_post
+  output_dim: 768
+  mean_pooling: true
+  sequence_window_bp: 2000        # 1,000 bp on each side of the CPRA coordinate
+
+model:
+  embedding_dim: 768
+  hidden_dim: 768
+  latent_dim: 32
+  num_heads: 12
+  num_layers: 10
+  dropout: 0.2
+
+gene_features:
+  gene_feature_dim: 8
+  gf_dropout: 0.5
+  columns:
+    - ppi_distance                # LDLR-relative PPI graph distance
+    - reactome_shared             # LDLR-relative shared Reactome pathways
+    - go_similarity               # LDLR-relative GO BP Jaccard similarity
+    - pli                         # gene-intrinsic, probability of LoF intolerance
+    - loeuf                       # gene-intrinsic, LoF observed/expected upper bound
+    - depmap_score                # gene-intrinsic, mean gene-effect essentiality
+    - tissue_breadth              # gene-intrinsic, number of expressing tissues
+    - mean_log_tpm                # gene-intrinsic, log-TPM tissue mean
+
+svdd:
+  objective: soft-boundary
+  nu: 0.1
+  center_eps: 0.1
